@@ -13,6 +13,8 @@ type UserClaims struct {
 	ProfilePicture string       `json:"profilePicture"`
 	Email          string       `json:"email"`
 	Roles          []enums.Role `json:"roles"`
+	IsConfirmed    bool         `json:"isConfirmed"`
+	IsBlocked      bool         `json:"isBlocked"`
 	jwt.StandardClaims
 }
 
