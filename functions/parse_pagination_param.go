@@ -5,18 +5,11 @@ import (
 	"strconv"
 
 	"github.com/educolog7/packages/enums"
+	"github.com/educolog7/packages/types"
 	"github.com/gin-gonic/gin"
 )
 
-type Pagination struct {
-	Offset int64
-	Limit  int64
-	Search string
-	Sort   string
-	Order  enums.SortOrder
-}
-
-func ParsePaginationParams(c *gin.Context) (*Pagination, error) {
+func ParsePaginationParams(c *gin.Context) (*types.Pagination, error) {
 	offsetStr := c.Query("offset")
 	limitStr := c.Query("limit")
 	search := c.DefaultQuery("search", "")
@@ -47,7 +40,7 @@ func ParsePaginationParams(c *gin.Context) (*Pagination, error) {
 		order = enums.Desc
 	}
 
-	pagination := &Pagination{
+	pagination := &types.Pagination{
 		Offset: offset,
 		Limit:  limit,
 		Search: search,
