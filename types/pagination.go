@@ -8,4 +8,6 @@ type Pagination struct {
 	Search string
 	Sort   string
 	Order  enums.SortOrder
+	Next   string
+	Prev   string
 }
