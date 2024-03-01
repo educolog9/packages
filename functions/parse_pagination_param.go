@@ -1,8 +1,9 @@
 package functions
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
-	"strconv"
 
 	"github.com/educolog7/packages/enums"
 	"github.com/educolog7/packages/types"
@@ -10,43 +11,36 @@ import (
 )
 
 func ParsePaginationParams(c *gin.Context) (*types.Pagination, error) {
-	offsetStr := c.Query("offset")
-	limitStr := c.Query("limit")
-	search := c.DefaultQuery("search", "")
-	sort := c.DefaultQuery("sort", "created_at")
-	orderStr := c.DefaultQuery("order", "asc")
+	paginationEncode := c.Query("p")
 
-	var offset int64 = 0 // Default offset value
-	var err error
-	if offsetStr != "" {
-		offset, err = strconv.ParseInt(offsetStr, 10, 64)
-		if err != nil {
-			return nil, fmt.Errorf("invalid offset format: %w", err)
-		}
+	decodedData, err := base64.URLEncoding.DecodeString(paginationEncode)
+	if err != nil {
+		return nil, fmt.Errorf("invalid pagination format: %w", err)
 	}
 
-	var limit int64 = 10 // Default limit value
-	if limitStr != "" {
-		limit, err = strconv.ParseInt(limitStr, 10, 64)
-		if err != nil {
-			return nil, fmt.Errorf("invalid limit format: %w", err)
-		}
+	var p types.Pagination
+	json.Unmarshal(decodedData, &p)
+
+	// add default values
+	if p.Limit == 0 {
+		p.Limit = 10
 	}
 
-	var order enums.SortOrder
-	if orderStr == "asc" {
-		order = enums.Asc
+	if p.Offset == 0 {
+		p.Offset = 0
+	}
+
+	if p.Order == "" {
+		p.Order = enums.Asc
 	} else {
-		order = enums.Desc
+		if p.Order != enums.Asc && p.Order != enums.Desc {
+			return nil, fmt.Errorf("invalid order format")
+		}
 	}
 
-	pagination := &types.Pagination{
-		Offset: offset,
-		Limit:  limit,
-		Search: search,
-		Sort:   sort,
-		Order:  order,
+	if p.Sort == "" {
+		p.Sort = "id"
 	}
 
-	return pagination, nil
+	return &p, nil
 }
