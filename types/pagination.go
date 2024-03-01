@@ -8,6 +8,18 @@ type Filter struct {
 	Value    interface{}
 }
 
+type PaginationConfig struct {
+	Pagination Pagination
+	WithLimit  bool
+}
+
+func NewPaginationConfig(pagination Pagination) *PaginationConfig {
+	return &PaginationConfig{
+		Pagination: pagination,
+		WithLimit:  true, // default value
+	}
+}
+
 type Pagination struct {
 	Offset  int64
 	Limit   int64

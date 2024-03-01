@@ -9,15 +9,23 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// ConvertPaginationToMongoFilter converts a types.Pagination object into a MongoDB filter and find options.
-// It takes the pagination object as input and returns the corresponding filter, find options, and an error (if any).
-// The filter is a bson.M object representing the filter conditions based on the pagination parameters.
-// The find options are options.FindOptions object that specify skip, limit, and sort options for the MongoDB query.
-// If any unsupported operator is encountered in the pagination filters, an error is returned.
-func ConvertPaginationToMongoFilter(pagination types.Pagination) (bson.M, *options.FindOptions, error) {
+// ConvertPaginationToMongoFilter converts a PaginationConfig into a MongoDB filter and FindOptions.
+// It takes a PaginationConfig as input and returns a bson.M filter, *options.FindOptions, and an error.
+// The filter is constructed based on the pagination parameters such as offset, limit, sort, search, and filters.
+// The FindOptions are set based on the limit and skip values.
+// The function supports various filter operators such as equal, not equal, greater than, greater than or equal to,
+// less than, less than or equal to, in, not in, like, and not like.
+// If an unsupported operator is encountered, an error is returned.
+func ConvertPaginationToMongoFilter(config types.PaginationConfig) (bson.M, *options.FindOptions, error) {
 	findOptions := options.Find()
-	findOptions.SetSkip(pagination.GetOffset())
-	findOptions.SetLimit(pagination.GetLimit())
+
+	withLimit := config.WithLimit
+	pagination := config.Pagination
+
+	if withLimit {
+		findOptions.SetSkip(pagination.GetOffset())
+		findOptions.SetLimit(pagination.GetLimit())
+	}
 
 	if pagination.GetSort() != "" {
 		sortOrder := 1
