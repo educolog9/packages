@@ -38,9 +38,5 @@ func ParsePaginationParams(c *gin.Context) (*types.Pagination, error) {
 		}
 	}
 
-	if p.Sort == "" {
-		p.Sort = "id"
-	}
-
 	return &p, nil
 }
