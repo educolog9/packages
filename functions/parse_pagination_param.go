@@ -19,15 +19,9 @@ func ParsePaginationParams(c *gin.Context) (*types.Pagination, error) {
 	}
 
 	var p types.Pagination
-	json.Unmarshal(decodedData, &p)
-
-	// add default values
-	if p.Limit == 0 {
-		p.Limit = 10
-	}
-
-	if p.Offset == 0 {
-		p.Offset = 0
+	err = json.Unmarshal(decodedData, &p)
+	if err != nil {
+		return nil, fmt.Errorf("invalid pagination data: %w", err)
 	}
 
 	if p.Order == "" {
