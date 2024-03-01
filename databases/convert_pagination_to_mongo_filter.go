@@ -9,6 +9,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// ConvertPaginationToMongoFilter converts a types.Pagination object into a MongoDB filter and find options.
+// It takes the pagination object as input and returns the corresponding filter, find options, and an error (if any).
+// The filter is a bson.M object representing the filter conditions based on the pagination parameters.
+// The find options are options.FindOptions object that specify skip, limit, and sort options for the MongoDB query.
+// If any unsupported operator is encountered in the pagination filters, an error is returned.
 func ConvertPaginationToMongoFilter(pagination types.Pagination) (bson.M, *options.FindOptions, error) {
 	findOptions := options.Find()
 	findOptions.SetSkip(pagination.GetOffset())
