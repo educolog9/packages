@@ -7,9 +7,12 @@ import (
 
 // UserClaims represents the claims of a user in the system.
 type UserClaims struct {
-	ID       string       `json:"id"`
-	Username string       `json:"username"`
-	Roles    []enums.Role `json:"roles"`
+	ID             string       `json:"id"`
+	Name           string       `json:"name"`
+	LastName       string       `json:"lastName"`
+	ProfilePicture string       `json:"profilePicture"`
+	Email          string       `json:"email"`
+	Roles          []enums.Role `json:"roles"`
 	jwt.StandardClaims
 }
 
