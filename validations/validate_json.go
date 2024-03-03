@@ -1,4 +1,4 @@
-package middlewares
+package validations
 
 import (
 	"net/http"
@@ -21,8 +21,7 @@ func ValidateJSON(obj interface{}) gin.HandlerFunc {
 
 		}
 
-		validate := validator.New()
-		if err := validate.Struct(obj); err != nil {
+		if err := Validate.Struct(obj); err != nil {
 			if errs, ok := err.(validator.ValidationErrors); ok {
 				for _, e := range errs {
 					errors = append(errors, e.Error())
