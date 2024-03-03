@@ -11,13 +11,28 @@ import (
 
 func ValidateJSON(obj interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var errors []string
+
 		if err := c.ShouldBind(obj); err != nil {
-			var errors []string
 
 			for _, err := range err.(validator.ValidationErrors) {
 				errors = append(errors, err.Error())
 			}
 
+		}
+
+		validate := validator.New()
+		if err := validate.Struct(obj); err != nil {
+			if errs, ok := err.(validator.ValidationErrors); ok {
+				for _, e := range errs {
+					errors = append(errors, e.Error())
+				}
+			} else {
+				errors = append(errors, err.Error())
+			}
+		}
+
+		if len(errors) > 0 {
 			response := types.ErrorResponse{
 				Status:  http.StatusBadRequest,
 				Message: messages.ValidationFailed,
