@@ -14,7 +14,7 @@ import (
 func ParseMongoIDMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
-		id, err := primitive.ObjectIDFromHex(idStr)
+		_, err := primitive.ObjectIDFromHex(idStr)
 		if err != nil {
 			response := types.ErrorResponse{
 				Status:  http.StatusBadRequest,
@@ -26,7 +26,7 @@ func ParseMongoIDMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("id", id)
+		c.Set("id", idStr)
 		c.Next()
 	}
 }
