@@ -26,7 +26,7 @@ func ParseMongoIDMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("mongoID", id)
+		c.Set("id", id)
 		c.Next()
 	}
 }
