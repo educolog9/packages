@@ -9,11 +9,11 @@ type Filter struct {
 }
 
 type PaginationConfig struct {
-	Pagination Pagination
+	Pagination *Pagination
 	WithLimit  bool
 }
 
-func NewPaginationConfig(pagination Pagination) *PaginationConfig {
+func NewPaginationConfig(pagination *Pagination) *PaginationConfig {
 	return &PaginationConfig{
 		Pagination: pagination,
 		WithLimit:  true, // default value

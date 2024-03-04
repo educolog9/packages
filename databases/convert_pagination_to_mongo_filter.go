@@ -16,7 +16,7 @@ import (
 // The function supports various filter operators such as equal, not equal, greater than, greater than or equal to,
 // less than, less than or equal to, in, not in, like, and not like.
 // If an unsupported operator is encountered, an error is returned.
-func ConvertPaginationToMongoFilter(config types.PaginationConfig) (bson.M, *options.FindOptions, error) {
+func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *options.FindOptions, error) {
 	findOptions := options.Find()
 
 	withLimit := config.WithLimit
