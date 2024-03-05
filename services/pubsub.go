@@ -27,9 +27,7 @@ func NewPubSubService(client *pubsub.Client) *PubSubService {
 // The function first checks if the topic exists, and if not, it creates the topic.
 // Then, it sets the message data and publishes the message to the topic.
 // The function returns the message ID if the message is successfully published, otherwise it returns an error.
-func (p *PubSubService) PublishMessage(topicName string, data []byte) (string, error) {
-	ctx := context.Background()
-
+func (p *PubSubService) PublishMessage(ctx context.Context, topicName string, data []byte) (string, error) {
 	// Get the environment.
 	env := os.Getenv("ENV")
 
@@ -74,9 +72,7 @@ func (p *PubSubService) PublishMessage(topicName string, data []byte) (string, e
 // It takes the topic name, subscription name, and a message handler function as parameters.
 // The message handler function is responsible for processing the received messages.
 // It returns an error if there was a problem creating the subscription or receiving messages.
-func (p *PubSubService) Subscribe(topicName string, subName string, handler func(context.Context, *pubsub.Message)) error {
-	ctx := context.Background()
-
+func (p *PubSubService) Subscribe(ctx context.Context, topicName string, subName string, handler func(context.Context, *pubsub.Message)) error {
 	// Get the environment.
 	env := os.Getenv("ENV")
 
