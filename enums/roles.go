@@ -1,19 +1,24 @@
 package enums
 
 // Role represents a user role in the system.
+// @name Role
 type Role string
 
 const (
 	// Admin represents the role of an administrator.
+	// @description Administrator role
 	Admin Role = "admin"
 
 	// User represents the role of a regular user.
+	// @description Regular user role
 	User Role = "user"
 
 	// Author represents the role of an author.
+	// @description Author role
 	Author Role = "author"
 
 	// Editor represents the role of an editor.
+	// @description Editor role
 	Editor Role = "editor"
 )
 
