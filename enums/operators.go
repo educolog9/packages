@@ -16,15 +16,15 @@ const (
 	NotIn              Operator = "notIn"
 )
 
-// Example of usage in a filter url:
+// Example of usage in a filter:
 
-// /api/v1/users?filters=[{"field":"name","operator":"eq","value":"John"}]
-// /api/v1/users?filters=[{"field":"age","operator":"gte","value":"18"}]
-// /api/v1/users?filters=[{"field":"age","operator":"in","value":"18,19,20"}]
-// /api/v1/users?filters=[{"field":"name","operator":"like","value":"John"}]
-// /api/v1/users?filters=[{"field":"name","operator":"notLike","value":"John"}]
-// /api/v1/users?filters=[{"field":"age","operator":"lt","value":"18"}]
-// /api/v1/users?filters=[{"field":"age","operator":"lte","value":"18"}]
-// /api/v1/users?filters=[{"field":"age","operator":"ne","value":"18"}]
-// /api/v1/users?filters=[{"field":"age","operator":"notIn","value":"18,19,20"}]
-// /api/v1/users?filters=[{"field":"age","operator":"gt","value":"18"}]
+// [{"field":"name","operator":"eq","value":"John"}]
+// [{"field":"age","operator":"gte","value":"18"}]
+// [{"field":"age","operator":"in","value":"18,19,20"}]
+// [{"field":"name","operator":"like","value":"John"}]
+// [{"field":"name","operator":"notLike","value":"John"}]
+// [{"field":"age","operator":"lt","value":"18"}]
+// [{"field":"age","operator":"lte","value":"18"}]
+// [{"field":"age","operator":"ne","value":"18"}]
+// [{"field":"age","operator":"notIn","value":"18,19,20"}]
+// [{"field":"age","operator":"gt","value":"18"}]
