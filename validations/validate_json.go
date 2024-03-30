@@ -7,19 +7,25 @@ import (
 	"github.com/educolog7/packages/types"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
+	"github.com/go-playground/locales/es"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 )
 
-func ValidateJSON(obj interface{}, trans ut.Translator) gin.HandlerFunc {
+func ValidateJSON(obj interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var errors []string
 
-		if trans == nil {
-			en := en.New()
-			uni := ut.New(en, nil)
-			trans, _ = uni.GetTranslator("en")
+		en := en.New()
+		es := es.New()
+		uni := ut.New(en, es)
+
+		language, ok := c.Get("translator")
+		if !ok {
+			language = "en"
 		}
+
+		trans, _ := uni.GetTranslator(language.(string))
 
 		if err := c.ShouldBind(obj); err != nil {
 			for _, err := range err.(validator.ValidationErrors) {
