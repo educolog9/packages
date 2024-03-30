@@ -8,6 +8,7 @@ import (
 )
 
 var Validate *validator.Validate
+var Uni *ut.UniversalTranslator
 
 func init() {
 	// Initialize the validator and register the custom URL validation function
@@ -19,14 +20,14 @@ func init() {
 	en := en.New()
 	es := es.New()
 
-	uni := ut.New(en, es)
+	Uni := ut.New(en, es)
 
 	// Set the translator for English
-	transEn, _ := uni.GetTranslator("en")
+	transEn, _ := Uni.GetTranslator("en")
 	registerENTranslations(transEn)
 
 	// Set the translator for Spanish
-	transEs, _ := uni.GetTranslator("es")
+	transEs, _ := Uni.GetTranslator("es")
 	registerESTranslations(transEs)
 }
 

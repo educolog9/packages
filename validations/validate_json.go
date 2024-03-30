@@ -7,9 +7,6 @@ import (
 	languagues "github.com/educolog7/packages/languages"
 	"github.com/educolog7/packages/types"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/locales/en"
-	"github.com/go-playground/locales/es"
-	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -17,16 +14,12 @@ func ValidateJSON(obj interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var errors []string
 
-		en := en.New()
-		es := es.New()
-		uni := ut.New(en, es)
-
 		language, ok := c.Get("language")
 		if !ok {
 			language = languagues.Spanish.String()
 		}
 
-		trans, _ := uni.GetTranslator(language.(string))
+		trans, _ := Uni.GetTranslator(language.(string))
 
 		if err := c.ShouldBind(obj); err != nil {
 			for _, err := range err.(validator.ValidationErrors) {
