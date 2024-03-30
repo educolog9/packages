@@ -14,6 +14,9 @@ func init() {
 	// Initialize the validator and register the custom URL validation function
 	Validate = validator.New()
 	_ = Validate.RegisterValidation("customurl", validateURL)
+	_ = Validate.RegisterValidation("customArrayURL", validateURLArray)
+	_ = Validate.RegisterValidation("picture", validatePictureURL)
+	_ = Validate.RegisterValidation("pictures", validatePicturesURL)
 	_ = Validate.RegisterValidation("mongoID", validateMongoID)
 
 	// Initialize the translators
@@ -43,6 +46,27 @@ func registerENTranslations(trans ut.Translator) {
 		return ut.Add("customurl", "The field {0} is not a valid URL", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("customurl", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("customArrayURL", trans, func(ut ut.Translator) error {
+		return ut.Add("urlarray", "The field {0} contains an invalid URL", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("urlarray", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("picture", trans, func(ut ut.Translator) error {
+		return ut.Add("picture", "The field {0} is not a valid picture URL", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("picture", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("pictures", trans, func(ut ut.Translator) error {
+		return ut.Add("pictures", "The field {0} contains an invalid picture URL", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("pictures", fe.Field())
 		return t
 	})
 
@@ -95,6 +119,27 @@ func registerESTranslations(trans ut.Translator) {
 		return ut.Add("customurl", "El campo {0} no es una URL válida", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("customurl", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("customArrayURL", trans, func(ut ut.Translator) error {
+		return ut.Add("urlarray", "El campo {0} contiene una URL inválida", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("urlarray", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("picture", trans, func(ut ut.Translator) error {
+		return ut.Add("picture", "El campo {0} no es una URL de imagen válida", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("picture", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("pictures", trans, func(ut ut.Translator) error {
+		return ut.Add("pictures", "El campo {0} contiene una URL de imagen inválida", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("pictures", fe.Field())
 		return t
 	})
 
