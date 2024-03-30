@@ -20,7 +20,7 @@ func init() {
 	en := en.New()
 	es := es.New()
 
-	Uni := ut.New(en, es)
+	Uni = ut.New(en, es)
 
 	// Set the translator for English
 	transEn, _ := Uni.GetTranslator("en")
