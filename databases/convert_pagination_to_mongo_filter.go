@@ -2,10 +2,12 @@ package databases
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/educolog7/packages/enums"
 	"github.com/educolog7/packages/types"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -41,35 +43,43 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 	}
 
 	for _, f := range pagination.GetFilters() {
+		value := f.Value
+		if reflect.TypeOf(f.Value).Kind() == reflect.String {
+			id, err := primitive.ObjectIDFromHex(f.Value.(string))
+			if err == nil {
+				value = id
+			}
+		}
+
 		switch f.Operator {
 		case enums.Equal:
-			filter[f.Field] = bson.M{"$eq": f.Value}
+			filter[f.Field] = bson.M{"$eq": value}
 		case enums.NotEqual:
-			filter[f.Field] = bson.M{"$ne": f.Value}
+			filter[f.Field] = bson.M{"$ne": value}
 		case enums.GreaterThan:
-			filter[f.Field] = bson.M{"$gt": f.Value}
+			filter[f.Field] = bson.M{"$gt": value}
 		case enums.GreaterThanOrEqual:
-			filter[f.Field] = bson.M{"$gte": f.Value}
+			filter[f.Field] = bson.M{"$gte": value}
 		case enums.LessThan:
-			filter[f.Field] = bson.M{"$lt": f.Value}
+			filter[f.Field] = bson.M{"$lt": value}
 		case enums.LessThanOrEqual:
-			filter[f.Field] = bson.M{"$lte": f.Value}
+			filter[f.Field] = bson.M{"$lte": value}
 		case enums.In:
-			values, ok := f.Value.([]interface{})
+			values, ok := value.([]interface{})
 			if !ok {
 				return nil, nil, fmt.Errorf("invalid format for 'in' operator")
 			}
 			filter[f.Field] = bson.M{"$in": values}
 		case enums.NotIn:
-			values, ok := f.Value.([]interface{})
+			values, ok := value.([]interface{})
 			if !ok {
 				return nil, nil, fmt.Errorf("invalid format for 'nin' operator")
 			}
 			filter[f.Field] = bson.M{"$nin": values}
 		case enums.Like:
-			filter[f.Field] = bson.M{"$regex": f.Value}
+			filter[f.Field] = bson.M{"$regex": value}
 		case enums.NotLike:
-			filter[f.Field] = bson.M{"$not": bson.M{"$regex": f.Value}}
+			filter[f.Field] = bson.M{"$not": bson.M{"$regex": value}}
 		default:
 			return nil, nil, fmt.Errorf("unsupported operator %s", f.Operator)
 		}
