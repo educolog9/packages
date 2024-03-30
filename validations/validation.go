@@ -40,7 +40,7 @@ func init() {
 // This function does not return any value.
 func registerENTranslations(trans ut.Translator) {
 	_ = Validate.RegisterTranslation("customurl", trans, func(ut ut.Translator) error {
-		return ut.Add("customurl", "{0} is not a valid URL", true)
+		return ut.Add("customurl", "The field {0} is not a valid URL", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("customurl", fe.Field())
 		return t
@@ -48,7 +48,7 @@ func registerENTranslations(trans ut.Translator) {
 
 	// Add translations for other validation tags here
 	_ = Validate.RegisterTranslation("mongoID", trans, func(ut ut.Translator) error {
-		return ut.Add("mongoID", "{0} is not a valid Mongo ID", true)
+		return ut.Add("mongoID", "The field {0} is not a valid Mongo ID", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("mongoID", fe.Field())
 		return t
@@ -56,7 +56,7 @@ func registerENTranslations(trans ut.Translator) {
 
 	// Add translations for the "required" tag
 	_ = Validate.RegisterTranslation("required", trans, func(ut ut.Translator) error {
-		return ut.Add("required", "{0} is required", true)
+		return ut.Add("required", "The field {0} is required", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("required", fe.Field())
 		return t
@@ -64,21 +64,21 @@ func registerENTranslations(trans ut.Translator) {
 
 	// Add translations for the "min" and "max" tags
 	_ = Validate.RegisterTranslation("min", trans, func(ut ut.Translator) error {
-		return ut.Add("min", "{0} must be at least {1}", true)
+		return ut.Add("min", "The field {0} must be at least {1}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("min", fe.Field(), fe.Param())
 		return t
 	})
 
 	_ = Validate.RegisterTranslation("max", trans, func(ut ut.Translator) error {
-		return ut.Add("max", "{0} must be no more than {1}", true)
+		return ut.Add("max", "The field {0} must be no more than {1}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("max", fe.Field(), fe.Param())
 		return t
 	})
 
 	_ = Validate.RegisterTranslation("email", trans, func(ut ut.Translator) error {
-		return ut.Add("email", "{0} must be a valid email", true)
+		return ut.Add("email", "The field {0} must be a valid email", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("email", fe.Field())
 		return t
@@ -92,7 +92,7 @@ func registerENTranslations(trans ut.Translator) {
 // The function returns an error if there was a problem registering the translations.
 func registerESTranslations(trans ut.Translator) {
 	_ = Validate.RegisterTranslation("customurl", trans, func(ut ut.Translator) error {
-		return ut.Add("customurl", "{0} no es una URL válida", true)
+		return ut.Add("customurl", "El campo {0} no es una URL válida", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("customurl", fe.Field())
 		return t
@@ -100,7 +100,7 @@ func registerESTranslations(trans ut.Translator) {
 
 	// Add translations for other validation tags here
 	_ = Validate.RegisterTranslation("mongoID", trans, func(ut ut.Translator) error {
-		return ut.Add("mongoID", "{0} no es un ID de Mongo válido", true)
+		return ut.Add("mongoID", "El campo {0} no es un ID de Mongo válido", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("mongoID", fe.Field())
 		return t
@@ -108,7 +108,7 @@ func registerESTranslations(trans ut.Translator) {
 
 	// Add translations for the "required" tag
 	_ = Validate.RegisterTranslation("required", trans, func(ut ut.Translator) error {
-		return ut.Add("required", "{0} es requerido", true)
+		return ut.Add("required", "El campo {0} es requerido", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("required", fe.Field())
 		return t
@@ -116,14 +116,14 @@ func registerESTranslations(trans ut.Translator) {
 
 	// Add translations for the "min" and "max" tags
 	_ = Validate.RegisterTranslation("min", trans, func(ut ut.Translator) error {
-		return ut.Add("min", "{0} debe ser al menos {1}", true)
+		return ut.Add("min", "El campo {0} debe ser al menos {1}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("min", fe.Field(), fe.Param())
 		return t
 	})
 
 	_ = Validate.RegisterTranslation("max", trans, func(ut ut.Translator) error {
-		return ut.Add("max", "{0} no debe ser más de {1}", true)
+		return ut.Add("max", "El campo {0} no debe ser más de {1}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("max", fe.Field(), fe.Param())
 		return t
