@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/educolog7/packages/errors/messages"
+	languagues "github.com/educolog7/packages/languages"
 	"github.com/educolog7/packages/types"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
@@ -20,9 +21,9 @@ func ValidateJSON(obj interface{}) gin.HandlerFunc {
 		es := es.New()
 		uni := ut.New(en, es)
 
-		language, ok := c.Get("translator")
+		language, ok := c.Get("language")
 		if !ok {
-			language = "en"
+			language = languagues.Spanish.String()
 		}
 
 		trans, _ := uni.GetTranslator(language.(string))
