@@ -65,17 +65,27 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 		case enums.LessThanOrEqual:
 			filter[f.Field] = bson.M{"$lte": value}
 		case enums.In:
-			values, ok := value.([]interface{})
-			if !ok {
+			switch v := value.(type) {
+			case []string:
+				filter[f.Field] = bson.M{"$in": v}
+			case []interface{}:
+				filter[f.Field] = bson.M{"$in": v}
+			case string:
+				filter[f.Field] = bson.M{"$in": []string{v}}
+			default:
 				return nil, nil, fmt.Errorf("invalid format for 'in' operator")
 			}
-			filter[f.Field] = bson.M{"$in": values}
 		case enums.NotIn:
-			values, ok := value.([]interface{})
-			if !ok {
-				return nil, nil, fmt.Errorf("invalid format for 'nin' operator")
+			switch v := value.(type) {
+			case []string:
+				filter[f.Field] = bson.M{"$nin": v}
+			case []interface{}:
+				filter[f.Field] = bson.M{"$nin": v}
+			case string:
+				filter[f.Field] = bson.M{"$nin": []string{v}}
+			default:
+				return nil, nil, fmt.Errorf("invalid format for 'not in' operator")
 			}
-			filter[f.Field] = bson.M{"$nin": values}
 		case enums.Like:
 			filter[f.Field] = bson.M{"$regex": value}
 		case enums.NotLike:
