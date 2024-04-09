@@ -11,6 +11,8 @@ type UserClaims struct {
 	Name           string       `json:"name"`
 	LastName       string       `json:"lastName"`
 	ProfilePicture string       `json:"profilePicture"`
+	DepartmentID   string       `json:"departmentId"`
+	OrganizationID string       `json:"organizationId"`
 	Email          string       `json:"email"`
 	Roles          []enums.Role `json:"roles"`
 	IsConfirmed    bool         `json:"isConfirmed"`
@@ -52,6 +54,26 @@ func (uc *UserClaims) IsAuthor() bool {
 func (uc *UserClaims) IsEditor() bool {
 	for _, role := range uc.Roles {
 		if role == enums.Editor || role == enums.Admin {
+			return true
+		}
+	}
+	return false
+}
+
+// IsDirectorRRHH checks if the user has the director_rrhh role.
+func (uc *UserClaims) IsDirectorRRHH() bool {
+	for _, role := range uc.Roles {
+		if role == enums.DirectorRRHH || role == enums.Admin {
+			return true
+		}
+	}
+	return false
+}
+
+// IsCoordinatorRRHH checks if the user has the coordinator_rrhh role.
+func (uc *UserClaims) IsCoordinatorRRHH() bool {
+	for _, role := range uc.Roles {
+		if role == enums.CoordinatorRRHH || role == enums.DirectorRRHH || role == enums.Admin {
 			return true
 		}
 	}
