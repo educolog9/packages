@@ -18,6 +18,9 @@ func init() {
 	_ = Validate.RegisterValidation("picture", validatePictureURL)
 	_ = Validate.RegisterValidation("pictures", validatePicturesURL)
 	_ = Validate.RegisterValidation("mongoID", validateMongoID)
+	_ = Validate.RegisterValidation("latitude", validateLatitude)
+	_ = Validate.RegisterValidation("longitude", validateLongitude)
+	_ = Validate.RegisterValidation("phone", validatePhoneNumber)
 
 	// Initialize the translators
 	en := en.New()
@@ -107,6 +110,27 @@ func registerENTranslations(trans ut.Translator) {
 		t, _ := ut.T("email", fe.Field())
 		return t
 	})
+
+	_ = Validate.RegisterTranslation("latitude", trans, func(ut ut.Translator) error {
+		return ut.Add("latitude", "The field {0} must be a valid latitude", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("latitude", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("longitude", trans, func(ut ut.Translator) error {
+		return ut.Add("longitude", "The field {0} must be a valid longitude", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("longitude", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("phone", trans, func(ut ut.Translator) error {
+		return ut.Add("phone", "The field {0} must be a valid phone number", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("phone", fe.Field())
+		return t
+	})
 }
 
 // registerESTranslations registers custom translations for validation tags in the provided translator.
@@ -178,6 +202,27 @@ func registerESTranslations(trans ut.Translator) {
 		return ut.Add("email", "{0} debe ser un correo electrónico válido", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("email", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("latitude", trans, func(ut ut.Translator) error {
+		return ut.Add("latitude", "El campo {0} debe ser una latitud válida", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("latitude", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("longitude", trans, func(ut ut.Translator) error {
+		return ut.Add("longitude", "El campo {0} debe ser una longitud válida", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("longitude", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("phone", trans, func(ut ut.Translator) error {
+		return ut.Add("phone", "El campo {0} debe ser un número de teléfono válido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("phone", fe.Field())
 		return t
 	})
 }
