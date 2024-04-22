@@ -21,6 +21,7 @@ func init() {
 	_ = Validate.RegisterValidation("latitude", validateLatitude)
 	_ = Validate.RegisterValidation("longitude", validateLongitude)
 	_ = Validate.RegisterValidation("phone", validatePhoneNumber)
+	_ = Validate.RegisterValidation("countryISOCode", validateCountryISOCode)
 
 	// Initialize the translators
 	en := en.New()
@@ -131,6 +132,13 @@ func registerENTranslations(trans ut.Translator) {
 		t, _ := ut.T("phone", fe.Field())
 		return t
 	})
+
+	_ = Validate.RegisterTranslation("countryISOCode", trans, func(ut ut.Translator) error {
+		return ut.Add("countryISOCode", "The field {0} must be a valid country ISO code", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("countryISOCode", fe.Field())
+		return t
+	})
 }
 
 // registerESTranslations registers custom translations for validation tags in the provided translator.
@@ -223,6 +231,13 @@ func registerESTranslations(trans ut.Translator) {
 		return ut.Add("phone", "El campo {0} debe ser un número de teléfono válido", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("phone", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("countryISOCode", trans, func(ut ut.Translator) error {
+		return ut.Add("countryISOCode", "El campo {0} debe ser un código ISO de país válido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("countryISOCode", fe.Field())
 		return t
 	})
 }
