@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/educolog7/packages/functions"
+	"github.com/educolog9/packages/functions"
 	"github.com/gin-gonic/gin"
 )
 

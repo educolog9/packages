@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	languagues "github.com/educolog7/packages/languages"
+	languagues "github.com/educolog9/packages/languages"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/educolog7/packages/enums"
-	"github.com/educolog7/packages/functions"
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/enums"
+	"github.com/educolog9/packages/functions"
+	"github.com/educolog9/packages/types"
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 )

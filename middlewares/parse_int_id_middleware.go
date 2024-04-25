@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/types"
 	"github.com/gin-gonic/gin"
 )
 

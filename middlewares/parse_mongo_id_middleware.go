@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/types"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

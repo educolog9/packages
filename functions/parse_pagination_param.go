@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/educolog7/packages/enums"
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/enums"
+	"github.com/educolog9/packages/types"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,6 +1,6 @@
 package types
 
-import "github.com/educolog7/packages/enums"
+import "github.com/educolog9/packages/enums"
 
 type Filter struct {
 	Field    string

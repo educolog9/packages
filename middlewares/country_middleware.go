@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"github.com/educolog7/packages/countries"
+	"github.com/educolog9/packages/countries"
 	"github.com/gin-gonic/gin"
 )
 

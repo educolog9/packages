@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/educolog7/packages/enums"
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/enums"
+	"github.com/educolog9/packages/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"

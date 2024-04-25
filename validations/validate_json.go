@@ -3,9 +3,9 @@ package validations
 import (
 	"net/http"
 
-	"github.com/educolog7/packages/errors/messages"
-	languagues "github.com/educolog7/packages/languages"
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/errors/messages"
+	languagues "github.com/educolog9/packages/languages"
+	"github.com/educolog9/packages/types"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )

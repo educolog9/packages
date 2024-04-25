@@ -5,9 +5,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/educolog7/packages/errors/messages"
-	"github.com/educolog7/packages/sanitize"
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/errors/messages"
+	"github.com/educolog9/packages/sanitize"
+	"github.com/educolog9/packages/types"
 	"github.com/gin-gonic/gin"
 )
 

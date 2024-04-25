@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"github.com/educolog7/packages/types"
+	"github.com/educolog9/packages/types"
 	"github.com/golang-jwt/jwt"
 )
 

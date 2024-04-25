@@ -3,7 +3,7 @@ package functions
 import (
 	"net/http"
 
-	customerrors "github.com/educolog7/packages/errors/custom_errors"
+	customerrors "github.com/educolog9/packages/errors/custom_errors"
 	"github.com/gin-gonic/gin"
 )
 
