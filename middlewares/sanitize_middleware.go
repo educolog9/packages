@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/educolog9/packages/errors/messages"
 	"github.com/educolog9/packages/sanitize"
@@ -15,7 +16,7 @@ import (
 func SanitizeMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if c.Request.Method != http.MethodGet {
-			if c.GetHeader("Content-Type") != "multipart/form-data" {
+			if !strings.HasPrefix(c.GetHeader("Content-Type"), "multipart/form-data") {
 				body, err := io.ReadAll(c.Request.Body)
 				if err != nil {
 					response := types.ErrorResponse{
