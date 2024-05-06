@@ -68,7 +68,7 @@ func RoleBasedAuthMiddleware(allowedRoles []enums.Role) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user_claims", userClaims)
+		c.Set("userClaims", userClaims)
 
 		c.Next()
 	}
