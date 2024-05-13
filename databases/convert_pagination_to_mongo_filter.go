@@ -8,6 +8,7 @@ import (
 	"github.com/educolog9/packages/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -100,15 +101,15 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 
 // ConvertPaginationToMongoPipeline converts a PaginationConfig into a MongoDB filter and pipeline.
 // It takes a PaginationConfig as input and returns a bson.M filter, []bson.M pipeline, and an error.
-func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, []bson.M, error) {
-	pipeline := []bson.M{}
+func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, mongo.Pipeline, error) {
+	var pipeline []bson.D
 
 	withLimit := config.WithLimit
 	pagination := config.Pagination
 
 	if withLimit {
-		pipeline = append(pipeline, bson.M{"$skip": pagination.GetOffset()})
-		pipeline = append(pipeline, bson.M{"$limit": pagination.GetLimit()})
+		pipeline = append(pipeline, bson.D{{"$skip", pagination.GetOffset()}})
+		pipeline = append(pipeline, bson.D{{"$limit", pagination.GetLimit()}})
 	}
 
 	if pagination.GetSort() != "" {
@@ -116,7 +117,7 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, [
 		if pagination.GetOrder() == "desc" {
 			sortOrder = -1
 		}
-		pipeline = append(pipeline, bson.M{"$sort": bson.M{pagination.GetSort(): sortOrder}})
+		pipeline = append(pipeline, bson.D{{"$sort", bson.D{{pagination.GetSort(), sortOrder}}}})
 	}
 
 	filter := bson.M{}
@@ -177,5 +178,5 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, [
 		}
 	}
 
-	return filter, pipeline, nil
+	return filter, mongo.Pipeline(pipeline), nil
 }
