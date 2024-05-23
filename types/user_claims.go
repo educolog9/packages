@@ -11,8 +11,8 @@ type UserClaims struct {
 	Name           string       `json:"name"`
 	LastName       string       `json:"lastName"`
 	ProfilePicture string       `json:"profilePicture"`
-	DepartmentID   string       `json:"departmentId"`
-	OrganizationID string       `json:"organizationId"`
+	DepartmentID   string       `json:"department"`
+	OrganizationID string       `json:"organization"`
 	Email          string       `json:"email"`
 	Roles          []enums.Role `json:"roles"`
 	IsConfirmed    bool         `json:"isConfirmed"`
