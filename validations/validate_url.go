@@ -62,7 +62,7 @@ func validatePictureURL(fl validator.FieldLevel) bool {
 	}
 
 	// Check if the URL is an image URL
-	if !strings.HasSuffix(u.Path, ".jpg") && !strings.HasSuffix(u.Path, ".png") && !strings.HasSuffix(u.Path, ".jpeg") && !strings.HasSuffix(u.Path, ".svg") {
+	if !strings.HasSuffix(u.Path, ".jpg") && !strings.HasSuffix(u.Path, ".png") && !strings.HasSuffix(u.Path, ".jpeg") && !strings.HasSuffix(u.Path, ".svg") && !strings.HasSuffix(u.Path, ".webp") {
 		return false
 	}
 
