@@ -40,7 +40,22 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 
 	filter := bson.M{}
 	if pagination.GetSearch() != "" {
-		filter = bson.M{"$text": bson.M{"$search": pagination.GetSearch()}}
+		if true {
+			filter = bson.M{
+				"index": "default",
+				"text": bson.M{
+					"query": pagination.GetSearch(),
+					"path": bson.M{
+						"wildcard": "*",
+					},
+					"fuzzy": bson.M{
+						"maxEdits": 2,
+					},
+				}}
+		} else {
+			filter = bson.M{"$text": bson.M{"$search": pagination.GetSearch()}}
+		}
+
 	}
 
 	for _, f := range pagination.GetFilters() {

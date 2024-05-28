@@ -9,14 +9,16 @@ type Filter struct {
 }
 
 type PaginationConfig struct {
-	Pagination *Pagination
-	WithLimit  bool
+	Pagination      *Pagination
+	WithLimit       bool
+	WithAtlasSearch bool
 }
 
 func NewPaginationConfig(pagination *Pagination) *PaginationConfig {
 	return &PaginationConfig{
-		Pagination: pagination,
-		WithLimit:  true, // default value
+		Pagination:      pagination,
+		WithLimit:       true,  // default value
+		WithAtlasSearch: false, // default value
 	}
 }
 
