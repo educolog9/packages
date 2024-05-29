@@ -40,22 +40,7 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 
 	filter := bson.M{}
 	if pagination.GetSearch() != "" {
-		if true {
-			filter = bson.M{
-				"index": "default",
-				"text": bson.M{
-					"query": pagination.GetSearch(),
-					"path": bson.M{
-						"wildcard": "*",
-					},
-					"fuzzy": bson.M{
-						"maxEdits": 2,
-					},
-				}}
-		} else {
-			filter = bson.M{"$text": bson.M{"$search": pagination.GetSearch()}}
-		}
-
+		filter = bson.M{"$text": bson.M{"$search": pagination.GetSearch()}}
 	}
 
 	for _, f := range pagination.GetFilters() {
@@ -123,8 +108,8 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 	pagination := config.Pagination
 
 	if withLimit {
-		pipeline = append(pipeline, bson.D{{"$skip", pagination.GetOffset()}})
-		pipeline = append(pipeline, bson.D{{"$limit", pagination.GetLimit()}})
+		pipeline = append(pipeline, bson.D{{Key: "$skip", Value: pagination.GetOffset()}})
+		pipeline = append(pipeline, bson.D{{Key: "$limit", Value: pagination.GetLimit()}})
 	}
 
 	if pagination.GetSort() != "" {
@@ -132,11 +117,11 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 		if pagination.GetOrder() == "desc" {
 			sortOrder = -1
 		}
-		pipeline = append(pipeline, bson.D{{"$sort", bson.D{{pagination.GetSort(), sortOrder}}}})
+		pipeline = append(pipeline, bson.D{{Key: "$sort", Value: bson.D{{Key: pagination.GetSort(), Value: sortOrder}}}})
 	}
 
 	filter := bson.M{}
-	if pagination.GetSearch() != "" {
+	if pagination.GetSearch() != "" && !config.WithAtlasSearch {
 		filter = bson.M{"$text": bson.M{"$search": pagination.GetSearch()}}
 	}
 
