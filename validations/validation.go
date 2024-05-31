@@ -22,6 +22,7 @@ func init() {
 	_ = Validate.RegisterValidation("longitude", validateLongitude)
 	_ = Validate.RegisterValidation("phone", validatePhoneNumber)
 	_ = Validate.RegisterValidation("countryISOCode", validateCountryISOCode)
+	_ = Validate.RegisterValidation("mongoIDs", validateMongoIDs)
 
 	// Initialize the translators
 	en := en.New()
@@ -79,6 +80,13 @@ func registerENTranslations(trans ut.Translator) {
 		return ut.Add("mongoID", "The field {0} is not a valid Mongo ID", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("mongoID", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("mongoIDs", trans, func(ut ut.Translator) error {
+		return ut.Add("mongoIDs", "The field {0} contains an invalid Mongo ID", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("mongoIDs", fe.Field())
 		return t
 	})
 
@@ -180,6 +188,13 @@ func registerESTranslations(trans ut.Translator) {
 		return ut.Add("mongoID", "El campo {0} no es un ID de Mongo válido", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("mongoID", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("mongoIDs", trans, func(ut ut.Translator) error {
+		return ut.Add("mongoIDs", "El campo {0} contiene un ID de Mongo inválido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("mongoIDs", fe.Field())
 		return t
 	})
 
