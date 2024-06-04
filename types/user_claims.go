@@ -11,7 +11,7 @@ type UserClaims struct {
 	Name           string       `json:"name"`
 	LastName       string       `json:"lastName"`
 	ProfilePicture string       `json:"profilePicture"`
-	DepartmentID   string       `json:"department"`
+	Groups         []string     `json:"groups"`
 	OrganizationID string       `json:"organization"`
 	Email          string       `json:"email"`
 	Roles          []enums.Role `json:"roles"`
@@ -74,6 +74,16 @@ func (uc *UserClaims) IsDirectorRRHH() bool {
 func (uc *UserClaims) IsCoordinatorRRHH() bool {
 	for _, role := range uc.Roles {
 		if role == enums.CoordinatorRRHH || role == enums.DirectorRRHH || role == enums.Admin {
+			return true
+		}
+	}
+	return false
+}
+
+// Search the groupID in the user's groups.
+func (uc *UserClaims) HasGroupID(groupID string) bool {
+	for _, group := range uc.Groups {
+		if group == groupID {
 			return true
 		}
 	}
