@@ -23,6 +23,10 @@ func init() {
 	_ = Validate.RegisterValidation("phone", validatePhoneNumber)
 	_ = Validate.RegisterValidation("countryISOCode", validateCountryISOCode)
 	_ = Validate.RegisterValidation("mongoIDs", validateMongoIDs)
+	_ = Validate.RegisterValidation("validateCardNumber", validateCardNumber)
+	_ = Validate.RegisterValidation("validateCSV", validateCSV)
+	_ = Validate.RegisterValidation("validateExpiryMonth", validateExpiryMonth)
+	_ = Validate.RegisterValidation("validateExpiryYear", validateExpiryYear)
 
 	// Initialize the translators
 	en := en.New()
@@ -147,6 +151,34 @@ func registerENTranslations(trans ut.Translator) {
 		t, _ := ut.T("countryISOCode", fe.Field())
 		return t
 	})
+
+	_ = Validate.RegisterTranslation("validateCardNumber", trans, func(ut ut.Translator) error {
+		return ut.Add("validateCardNumber", "The field {0} must be a valid card number", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateCardNumber", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateCSV", trans, func(ut ut.Translator) error {
+		return ut.Add("validateCSV", "The field {0} must be a valid CSV", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateCSV", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateExpiryMonth", trans, func(ut ut.Translator) error {
+		return ut.Add("validateExpiryMonth", "The field {0} must be a valid expiry month", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateExpiryMonth", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateExpiryYear", trans, func(ut ut.Translator) error {
+		return ut.Add("validateExpiryYear", "The field {0} must be a valid expiry year", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateExpiryYear", fe.Field())
+		return t
+	})
 }
 
 // registerESTranslations registers custom translations for validation tags in the provided translator.
@@ -253,6 +285,34 @@ func registerESTranslations(trans ut.Translator) {
 		return ut.Add("countryISOCode", "El campo {0} debe ser un código ISO de país válido", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T("countryISOCode", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateCardNumber", trans, func(ut ut.Translator) error {
+		return ut.Add("validateCardNumber", "El campo {0} debe ser un número de tarjeta válido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateCardNumber", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateCSV", trans, func(ut ut.Translator) error {
+		return ut.Add("validateCSV", "El campo {0} debe ser un CSV válido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateCSV", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateExpiryMonth", trans, func(ut ut.Translator) error {
+		return ut.Add("validateExpiryMonth", "El campo {0} debe ser un mes de vencimiento válido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateExpiryMonth", fe.Field())
+		return t
+	})
+
+	_ = Validate.RegisterTranslation("validateExpiryYear", trans, func(ut ut.Translator) error {
+		return ut.Add("validateExpiryYear", "El campo {0} debe ser un año de vencimiento válido", true)
+	}, func(ut ut.Translator, fe validator.FieldError) string {
+		t, _ := ut.T("validateExpiryYear", fe.Field())
 		return t
 	})
 }
