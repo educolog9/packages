@@ -68,6 +68,24 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 		case enums.In:
 			switch v := value.(type) {
 			case []string:
+				if len(v) > 0 {
+					// Attempt to convert the first element to see if it's a valid ObjectID
+					if _, err := primitive.ObjectIDFromHex(v[0]); err == nil {
+						// If the first element is a valid ObjectID, attempt to convert the entire slice
+						var objectIDs []primitive.ObjectID
+						for _, str := range v {
+							if objID, err := primitive.ObjectIDFromHex(str); err == nil {
+								objectIDs = append(objectIDs, objID)
+							}
+						}
+						if len(objectIDs) > 0 {
+							filter[f.Field] = bson.M{"$in": objectIDs}
+						}
+						break // Break after handling conversion to ObjectIDs
+					}
+					filter[f.Field] = bson.M{"$in": v}
+				}
+
 				filter[f.Field] = bson.M{"$in": v}
 			case []interface{}:
 				filter[f.Field] = bson.M{"$in": v}
@@ -79,6 +97,22 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 		case enums.NotIn:
 			switch v := value.(type) {
 			case []string:
+				if len(v) > 0 {
+					if _, err := primitive.ObjectIDFromHex(v[0]); err == nil {
+						var objectIDs []primitive.ObjectID
+						for _, str := range v {
+							if objID, err := primitive.ObjectIDFromHex(str); err == nil {
+								objectIDs = append(objectIDs, objID)
+							}
+						}
+						if len(objectIDs) > 0 {
+							filter[f.Field] = bson.M{"$nin": objectIDs}
+						}
+						break
+					}
+					filter[f.Field] = bson.M{"$nin": v}
+				}
+
 				filter[f.Field] = bson.M{"$nin": v}
 			case []interface{}:
 				filter[f.Field] = bson.M{"$nin": v}
