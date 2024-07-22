@@ -204,6 +204,24 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 
 				filter[f.Field] = bson.M{"$in": v}
 			case []interface{}:
+				if len(v) > 0 {
+					if str, ok := v[0].(string); ok {
+						if _, err := primitive.ObjectIDFromHex(str); err == nil {
+							var objectIDs []primitive.ObjectID
+							for _, item := range v {
+								if str, ok := item.(string); ok {
+									if objID, err := primitive.ObjectIDFromHex(str); err == nil {
+										objectIDs = append(objectIDs, objID)
+									}
+								}
+							}
+							if len(objectIDs) > 0 {
+								filter[f.Field] = bson.M{"$in": objectIDs}
+							}
+							break
+						}
+					}
+				}
 				filter[f.Field] = bson.M{"$in": v}
 			case string:
 				filter[f.Field] = bson.M{"$in": []string{v}}
@@ -228,10 +246,27 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 					}
 					filter[f.Field] = bson.M{"$nin": v}
 				}
-
 				filter[f.Field] = bson.M{"$nin": v}
 
 			case []interface{}:
+				if len(v) > 0 {
+					if str, ok := v[0].(string); ok {
+						if _, err := primitive.ObjectIDFromHex(str); err == nil {
+							var objectIDs []primitive.ObjectID
+							for _, item := range v {
+								if str, ok := item.(string); ok {
+									if objID, err := primitive.ObjectIDFromHex(str); err == nil {
+										objectIDs = append(objectIDs, objID)
+									}
+								}
+							}
+							if len(objectIDs) > 0 {
+								filter[f.Field] = bson.M{"$nin": objectIDs}
+							}
+							break
+						}
+					}
+				}
 				filter[f.Field] = bson.M{"$nin": v}
 			case string:
 				filter[f.Field] = bson.M{"$nin": []string{v}}
