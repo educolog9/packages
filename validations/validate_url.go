@@ -1,6 +1,7 @@
 package validations
 
 import (
+	"fmt"
 	"net/url"
 	"reflect"
 	"strings"
@@ -60,6 +61,9 @@ func validatePictureURL(fl validator.FieldLevel) bool {
 	if u.Scheme == "" || u.Host == "" {
 		return false
 	}
+
+	fmt.Print(u.Host)
+	fmt.Print(u)
 
 	if u.Host == "lh3.googleusercontent.com" {
 		return true
