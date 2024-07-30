@@ -93,7 +93,7 @@ func validatePicturesURL(fl validator.FieldLevel) bool {
 			return false
 		}
 
-		if !strings.HasSuffix(u.Path, ".jpg") && !strings.HasSuffix(u.Path, ".png") && !strings.HasSuffix(u.Path, ".jpeg") && !strings.HasSuffix(u.Path, ".svg") {
+		if !strings.HasSuffix(u.Path, ".jpg") && !strings.HasSuffix(u.Path, ".png") && !strings.HasSuffix(u.Path, ".jpeg") && !strings.HasSuffix(u.Path, ".svg") && !strings.HasSuffix(u.Path, ".webp") {
 			return false
 		}
 	}
