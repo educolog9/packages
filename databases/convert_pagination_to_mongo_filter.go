@@ -25,17 +25,17 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 	withLimit := config.WithLimit
 	pagination := config.Pagination
 
-	if withLimit {
-		findOptions.SetSkip(pagination.GetOffset())
-		findOptions.SetLimit(pagination.GetLimit())
-	}
-
 	if pagination.GetSort() != "" {
 		sortOrder := 1
 		if pagination.GetOrder() == "desc" {
 			sortOrder = -1
 		}
 		findOptions.SetSort(bson.D{{Key: pagination.GetSort(), Value: sortOrder}})
+	}
+
+	if withLimit {
+		findOptions.SetSkip(pagination.GetOffset())
+		findOptions.SetLimit(pagination.GetLimit())
 	}
 
 	filter := bson.M{}
@@ -141,17 +141,17 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 	withLimit := config.WithLimit
 	pagination := config.Pagination
 
-	if withLimit {
-		pipeline = append(pipeline, bson.D{{Key: "$skip", Value: pagination.GetOffset()}})
-		pipeline = append(pipeline, bson.D{{Key: "$limit", Value: pagination.GetLimit()}})
-	}
-
 	if pagination.GetSort() != "" {
 		sortOrder := 1
 		if pagination.GetOrder() == "desc" {
 			sortOrder = -1
 		}
 		pipeline = append(pipeline, bson.D{{Key: "$sort", Value: bson.D{{Key: pagination.GetSort(), Value: sortOrder}}}})
+	}
+
+	if withLimit {
+		pipeline = append(pipeline, bson.D{{Key: "$skip", Value: pagination.GetOffset()}})
+		pipeline = append(pipeline, bson.D{{Key: "$limit", Value: pagination.GetLimit()}})
 	}
 
 	filter := bson.M{}
