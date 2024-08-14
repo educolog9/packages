@@ -37,7 +37,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if err != nil {
 			response := types.ErrorResponse{
 				Status:  http.StatusUnauthorized,
-				Message: "Unauthorized",
+				Message: "Unauthorized Token Error or Expired",
 				Errors:  []string{err.Error()},
 			}
 			c.JSON(http.StatusUnauthorized, response)
