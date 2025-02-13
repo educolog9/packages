@@ -79,3 +79,23 @@ func (uc *UserClaims) IsCoordinatorRRHH() bool {
 	}
 	return false
 }
+
+// IsOrgLeader checks if the user has the org_leader role.
+func (uc *UserClaims) IsOrgLeader() bool {
+	for _, role := range uc.Roles {
+		if role == enums.OrgLeader || role == enums.Admin {
+			return true
+		}
+	}
+	return false
+}
+
+// IsOrgUser checks if the user has the org_leader role.
+func (uc *UserClaims) IsOrgUser() bool {
+	for _, role := range uc.Roles {
+		if role == enums.OrgUser || role == enums.Admin {
+			return true
+		}
+	}
+	return false
+}
