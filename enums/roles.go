@@ -48,7 +48,7 @@ var EDITORS_GROUP = []Role{Admin, Editor}
 var AUTHORS_GROUP = []Role{Admin, Author}
 
 // HR_ADMIN_GROUP is a list of DirectorRRHH and Admin roles for use in the application.
-var HR_ADMIN_GROUP = []Role{Admin, DirectorRRHH, OrgLeader}
+var HR_ADMIN_GROUP = []Role{Admin, DirectorRRHH, OrgLeader, User}
 
 // HR_COORDINATOR_GROUP is a list of CoordinatorRRHH and Admin roles for use in the application.
 var HR_COORDINATOR_GROUP = []Role{Admin, CoordinatorRRHH, DirectorRRHH, OrgLeader}
