@@ -9,3 +9,7 @@ const ContentLanguageKey contextKey = "contentLanguage"
 // CountryCodeKey is a context key used to store the country code.
 // It is used to retrieve the country code from the context.
 const CountryCodeKey contextKey = "countryCode"
+
+// TenantContextKey is a context key used to store the tenant context.
+// It is used to retrieve the tenant information from the context.
+const TenantContextKey contextKey = "tenantContext"
