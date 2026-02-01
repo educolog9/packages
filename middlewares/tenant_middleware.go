@@ -27,6 +27,7 @@ type dbWhiteLabel struct {
 	OrganizationID primitive.ObjectID `bson:"organizationId"`
 	Domain         string             `bson:"domain"`
 	Status         string             `bson:"status"`
+	Type           string             `bson:"type"` // "parent" | "child"
 	BackofficeUrl  string             `bson:"backofficeUrl"`
 	WebUrl         string             `bson:"webUrl"`
 }
@@ -84,6 +85,7 @@ func TenantResolver(client *mongo.Client) gin.HandlerFunc {
 			WhiteLabelID:   whiteLabel.ID.Hex(),
 			HasWhiteLabel:  true,
 			Status:         whiteLabel.Status,
+			Type:           types.WhiteLabelType(whiteLabel.Type),
 			BackofficeUrl:  whiteLabel.BackofficeUrl,
 			WebUrl:         whiteLabel.WebUrl,
 		}
@@ -161,12 +163,47 @@ func RequireTenant(client *mongo.Client) gin.HandlerFunc {
 			WhiteLabelID:   whiteLabel.ID.Hex(),
 			HasWhiteLabel:  true,
 			Status:         whiteLabel.Status,
+			Type:           types.WhiteLabelType(whiteLabel.Type),
 			BackofficeUrl:  whiteLabel.BackofficeUrl,
 			WebUrl:         whiteLabel.WebUrl,
 		}
 
 		// Set tenant context in Gin context
 		c.Set("tenantContext", tenantCtx)
+
+		c.Next()
+	}
+}
+
+// RequireParentTenant is a middleware that ensures the tenant is a parent white label.
+// Use this for endpoints that should only be accessible by parent tenants (master operations).
+// Returns 400 if no tenant context exists.
+// Returns 403 Forbidden if the tenant is not a parent.
+func RequireParentTenant() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		span, _ := opentracing.StartSpanFromContext(c.Request.Context(), "RequireParentTenant")
+		defer span.Finish()
+
+		tenantCtx := GetTenantContext(c)
+		if tenantCtx == nil {
+			c.JSON(400, types.ErrorResponse{
+				Status:  400,
+				Message: "Bad Request",
+				Errors:  []string{"Tenant context is required"},
+			})
+			c.Abort()
+			return
+		}
+
+		if !tenantCtx.IsParent() {
+			c.JSON(403, types.ErrorResponse{
+				Status:  403,
+				Message: "Forbidden",
+				Errors:  []string{"This operation requires a parent tenant"},
+			})
+			c.Abort()
+			return
+		}
 
 		c.Next()
 	}
