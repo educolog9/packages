@@ -90,10 +90,20 @@ func (uc *UserClaims) IsOrgLeader() bool {
 	return false
 }
 
-// IsOrgUser checks if the user has the org_leader role.
+// IsOrgUser checks if the user has the org_user role.
 func (uc *UserClaims) IsOrgUser() bool {
 	for _, role := range uc.Roles {
 		if role == enums.OrgUser || role == enums.Admin {
+			return true
+		}
+	}
+	return false
+}
+
+// IsOrgAdmin checks if the user has the org_admin role.
+func (uc *UserClaims) IsOrgAdmin() bool {
+	for _, role := range uc.Roles {
+		if role == enums.OrgAdmin || role == enums.Admin {
 			return true
 		}
 	}

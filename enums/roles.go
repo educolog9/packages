@@ -36,25 +36,32 @@ const (
 	// OrgUser represents the role of an organization user.
 	// @description Organization user role
 	OrgUser Role = "org_user"
+
+	// OrgAdmin represents the role of an organization administrator.
+	// @description Organization administrator role with content management permissions
+	OrgAdmin Role = "org_admin"
 )
 
 // Admins is a list of admin roles for use in the application.
 var ADMIN_GROUP = []Role{Admin}
 
 // EDITORS_GROUP is a list of Editor and Admin roles for use in the application.
-var EDITORS_GROUP = []Role{Admin, Editor}
+var EDITORS_GROUP = []Role{Admin, Editor, OrgAdmin}
 
 // AUTHORS_GROUP is a list of Author and Admin roles for use in the application.
 var AUTHORS_GROUP = []Role{Admin, Author}
 
 // HR_ADMIN_GROUP is a list of DirectorRRHH and Admin roles for use in the application.
-var HR_ADMIN_GROUP = []Role{Admin, DirectorRRHH, OrgLeader, User}
+var HR_ADMIN_GROUP = []Role{Admin, DirectorRRHH, OrgLeader, OrgAdmin, User}
 
 // HR_COORDINATOR_GROUP is a list of CoordinatorRRHH and Admin roles for use in the application.
-var HR_COORDINATOR_GROUP = []Role{Admin, CoordinatorRRHH, DirectorRRHH, OrgLeader}
+var HR_COORDINATOR_GROUP = []Role{Admin, CoordinatorRRHH, DirectorRRHH, OrgLeader, OrgAdmin}
 
 // ALL_ROLES is a list of all roles for use in the application.
-var ALL_ROLES = []Role{Admin, User, Author, Editor, DirectorRRHH, CoordinatorRRHH, OrgLeader, OrgUser}
+var ALL_ROLES = []Role{Admin, User, Author, Editor, DirectorRRHH, CoordinatorRRHH, OrgLeader, OrgAdmin, OrgUser}
 
 // ORGANIZATION_GROUP is a list of roles that can be assigned to an organization.
-var ORGANIZATION_GROUP = []Role{Admin, DirectorRRHH, CoordinatorRRHH, OrgLeader, OrgUser}
+var ORGANIZATION_GROUP = []Role{Admin, DirectorRRHH, CoordinatorRRHH, OrgLeader, OrgAdmin, OrgUser}
+
+// ORG_ADMIN_GROUP is a list of organization admin roles for content management.
+var ORG_ADMIN_GROUP = []Role{Admin, OrgAdmin}
