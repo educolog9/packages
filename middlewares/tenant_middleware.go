@@ -36,8 +36,8 @@ type dbWhiteLabel struct {
 // It queries the white_labels collection to get the organization information
 // and injects a TenantContext into the request context.
 //
-// If no X-Tenant-Domain header is present, the request continues without tenant context.
-// This allows the middleware to work with both public and authenticated endpoints.
+// If no X-Tenant-Domain header is present, it falls back to the parent tenant.
+// This ensures backward compatibility for clients that don't send the header.
 func TenantResolver(client *mongo.Client) gin.HandlerFunc {
 	collection := client.Database(tenantDB).Collection(whiteLabelsColl)
 
@@ -47,35 +47,44 @@ func TenantResolver(client *mongo.Client) gin.HandlerFunc {
 
 		// Get domain from X-Tenant-Domain header
 		domain := c.GetHeader(xTenantDomainHeader)
-		if domain == "" {
-			// No tenant header - continue without tenant context
-			// This is valid for endpoints that don't require tenant resolution
-			c.Next()
-			return
-		}
 
 		// Query white_labels collection
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 		defer cancel()
 
 		var whiteLabel dbWhiteLabel
-		err := collection.FindOne(ctx, bson.M{"domain": domain}).Decode(&whiteLabel)
-		if err != nil {
-			if err == mongo.ErrNoDocuments {
-				// Domain not found - continue without tenant context
-				// The handler can decide how to handle this case
-				c.Set("tenantContext", &types.TenantContext{
-					Domain:        domain,
-					HasWhiteLabel: false,
-				})
+		var err error
+
+		if domain == "" {
+			// No tenant header - fallback to parent tenant for backward compatibility
+			err = collection.FindOne(ctx, bson.M{"type": "parent"}).Decode(&whiteLabel)
+			if err != nil {
+				// No parent tenant configured - continue without tenant context
+				span.SetTag("warning", "no parent tenant found for fallback")
 				c.Next()
 				return
 			}
-			// Database error - log and continue without context
-			span.SetTag("error", true)
-			span.SetTag("error.message", err.Error())
-			c.Next()
-			return
+			domain = whiteLabel.Domain
+		} else {
+			// Query by provided domain
+			err = collection.FindOne(ctx, bson.M{"domain": domain}).Decode(&whiteLabel)
+			if err != nil {
+				if err == mongo.ErrNoDocuments {
+					// Domain not found - continue without tenant context
+					// The handler can decide how to handle this case
+					c.Set("tenantContext", &types.TenantContext{
+						Domain:        domain,
+						HasWhiteLabel: false,
+					})
+					c.Next()
+					return
+				}
+				// Database error - log and continue without context
+				span.SetTag("error", true)
+				span.SetTag("error.message", err.Error())
+				c.Next()
+				return
+			}
 		}
 
 		// Create tenant context with resolved data
