@@ -3,6 +3,7 @@ package databases
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/educolog9/packages/enums"
 	"github.com/educolog9/packages/types"
@@ -11,6 +12,26 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+// splitAndConvertInValues splits a comma-separated string and attempts ObjectID conversion.
+// Returns the appropriate bson.M filter for $in or $nin operators.
+func splitAndConvertInValues(v string, op string) bson.M {
+	parts := strings.Split(v, ",")
+	if len(parts) > 0 {
+		if _, err := primitive.ObjectIDFromHex(strings.TrimSpace(parts[0])); err == nil {
+			var objectIDs []primitive.ObjectID
+			for _, str := range parts {
+				if objID, err := primitive.ObjectIDFromHex(strings.TrimSpace(str)); err == nil {
+					objectIDs = append(objectIDs, objID)
+				}
+			}
+			if len(objectIDs) > 0 {
+				return bson.M{op: objectIDs}
+			}
+		}
+	}
+	return bson.M{op: parts}
+}
 
 // ConvertPaginationToMongoFilter converts a PaginationConfig into a MongoDB filter and FindOptions.
 // It takes a PaginationConfig as input and returns a bson.M filter, *options.FindOptions, and an error.
@@ -90,7 +111,7 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 			case []interface{}:
 				filter[f.Field] = bson.M{"$in": v}
 			case string:
-				filter[f.Field] = bson.M{"$in": []string{v}}
+				filter[f.Field] = splitAndConvertInValues(v, "$in")
 			default:
 				return nil, nil, fmt.Errorf("invalid format for 'in' operator")
 			}
@@ -117,7 +138,7 @@ func ConvertPaginationToMongoFilter(config *types.PaginationConfig) (bson.M, *op
 			case []interface{}:
 				filter[f.Field] = bson.M{"$nin": v}
 			case string:
-				filter[f.Field] = bson.M{"$nin": []string{v}}
+				filter[f.Field] = splitAndConvertInValues(v, "$nin")
 			default:
 				return nil, nil, fmt.Errorf("invalid format for 'not in' operator")
 			}
@@ -224,7 +245,7 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 				}
 				filter[f.Field] = bson.M{"$in": v}
 			case string:
-				filter[f.Field] = bson.M{"$in": []string{v}}
+				filter[f.Field] = splitAndConvertInValues(v, "$in")
 			default:
 				return nil, nil, fmt.Errorf("invalid format for 'in' operator")
 			}
@@ -269,7 +290,7 @@ func ConvertPaginationToMongoPipeline(config *types.PaginationConfig) (bson.M, m
 				}
 				filter[f.Field] = bson.M{"$nin": v}
 			case string:
-				filter[f.Field] = bson.M{"$nin": []string{v}}
+				filter[f.Field] = splitAndConvertInValues(v, "$nin")
 			default:
 				return nil, nil, fmt.Errorf("invalid format for 'not in' operator")
 			}
