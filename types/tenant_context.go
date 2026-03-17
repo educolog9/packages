@@ -21,6 +21,9 @@ type TenantContext struct {
 	Type           WhiteLabelType `json:"type"`   // "parent" | "child"
 	BackofficeUrl  string         `json:"backofficeUrl"`
 	WebUrl         string         `json:"webUrl"`
+	LogoURL        string         `json:"logoUrl"`
+	Colors         []string       `json:"colors"`
+	LoginImage     string         `json:"loginImage"`
 }
 
 // IsActive checks if the tenant's white label is active.

@@ -21,6 +21,12 @@ const (
 	xTenantDomainHeader = "X-Tenant-Domain"
 )
 
+type dbBranding struct {
+	Logo       string   `bson:"logo"`
+	LoginImage string   `bson:"loginImage"`
+	Colors     []string `bson:"colors"`
+}
+
 // dbWhiteLabel represents the white label document in MongoDB
 type dbWhiteLabel struct {
 	ID             primitive.ObjectID `bson:"_id"`
@@ -30,6 +36,7 @@ type dbWhiteLabel struct {
 	Type           string             `bson:"type"` // "parent" | "child"
 	BackofficeUrl  string             `bson:"backofficeUrl"`
 	WebUrl         string             `bson:"webUrl"`
+	Branding       dbBranding         `bson:"branding"`
 }
 
 // TenantResolver is a middleware that resolves the tenant from X-Tenant-Domain header.
@@ -87,7 +94,6 @@ func TenantResolver(client *mongo.Client) gin.HandlerFunc {
 			}
 		}
 
-		// Create tenant context with resolved data
 		tenantCtx := &types.TenantContext{
 			Domain:         domain,
 			OrganizationID: whiteLabel.OrganizationID.Hex(),
@@ -97,9 +103,11 @@ func TenantResolver(client *mongo.Client) gin.HandlerFunc {
 			Type:           types.WhiteLabelType(whiteLabel.Type),
 			BackofficeUrl:  whiteLabel.BackofficeUrl,
 			WebUrl:         whiteLabel.WebUrl,
+			LogoURL:        whiteLabel.Branding.Logo,
+			Colors:         whiteLabel.Branding.Colors,
+			LoginImage:     whiteLabel.Branding.LoginImage,
 		}
 
-		// Set tenant context in Gin context
 		c.Set("tenantContext", tenantCtx)
 
 		c.Next()
@@ -165,7 +173,6 @@ func RequireTenant(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		// Create tenant context with resolved data
 		tenantCtx := &types.TenantContext{
 			Domain:         domain,
 			OrganizationID: whiteLabel.OrganizationID.Hex(),
@@ -175,9 +182,11 @@ func RequireTenant(client *mongo.Client) gin.HandlerFunc {
 			Type:           types.WhiteLabelType(whiteLabel.Type),
 			BackofficeUrl:  whiteLabel.BackofficeUrl,
 			WebUrl:         whiteLabel.WebUrl,
+			LogoURL:        whiteLabel.Branding.Logo,
+			Colors:         whiteLabel.Branding.Colors,
+			LoginImage:     whiteLabel.Branding.LoginImage,
 		}
 
-		// Set tenant context in Gin context
 		c.Set("tenantContext", tenantCtx)
 
 		c.Next()
