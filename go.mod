@@ -1,6 +1,6 @@
 module github.com/educolog9/packages
 
-go 1.22.0
+go 1.25.0
 
 require (
 	cloud.google.com/go/pubsub v1.36.2
