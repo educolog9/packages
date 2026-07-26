@@ -2,7 +2,7 @@ package types
 
 import (
 	"github.com/educolog9/packages/enums"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // UserClaims represents the claims of a user in the system.
@@ -17,7 +17,7 @@ type UserClaims struct {
 	Roles          []enums.Role `json:"roles"`
 	IsConfirmed    bool         `json:"isConfirmed"`
 	IsBlocked      bool         `json:"isBlocked"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 // IsAdmin checks if the user has the admin role.
